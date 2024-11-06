@@ -1,5 +1,9 @@
 const User = require("../model/userModel.js");
-const { validateSignUpData } = require("../utils/validators.js");
+const {
+  validateSignUpData,
+  validateSignInData,
+  validateChangePassword,
+} = require("../utils/validators.js");
 
 exports.signUp = async (req, res) => {
   try {
@@ -31,6 +35,35 @@ exports.signUp = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   try {
+    const errors = await validateSignInData(req.body);
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        response: false,
+        msg: "Validation Error",
+        errors: errors,
+      });
+    }
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      response: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const errors = await validateChangePassword(req.body);
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        response: false,
+        msg: "Validation Error",
+        errors: errors,
+      });
+    }
   } catch (error) {
     const statusCode = error.statusCode || 500;
     res.status(statusCode).json({
