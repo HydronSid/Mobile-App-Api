@@ -8,6 +8,6 @@ router
   .get(bookController.getRandomBooks)
   .post(bookController.createBook);
 
-// router.route("/:id").get(bookController.getSpecificBook);
+router.route("/:id").get(bookController.getBooksByCategory);
 
 module.exports = router;

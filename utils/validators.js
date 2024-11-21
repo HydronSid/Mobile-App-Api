@@ -86,7 +86,7 @@ const validateChangePassword = async (data) => {
   return errors;
 };
 
-const validateCreateCategory = async (data) => {
+const validateCreateCategory = async (data, Category) => {
   const { name } = data;
 
   let errors = {};
@@ -95,7 +95,10 @@ const validateCreateCategory = async (data) => {
   if (!name) {
     errors.name = ["Category name is required."];
   }
-
+  const existingUser = await Category.findOne({ name });
+  if (existingUser) {
+    errors.name = ["Category with name already exists."];
+  }
   return errors;
 };
 
