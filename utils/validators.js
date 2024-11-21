@@ -86,8 +86,22 @@ const validateChangePassword = async (data) => {
   return errors;
 };
 
+const validateCreateCategory = async (data) => {
+  const { name } = data;
+
+  let errors = {};
+
+  //* Validate category name
+  if (!name) {
+    errors.name = ["Category name is required."];
+  }
+
+  return errors;
+};
+
 module.exports = {
   validateSignUpData,
   validateSignInData,
   validateChangePassword,
+  validateCreateCategory,
 };

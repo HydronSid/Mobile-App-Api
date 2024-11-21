@@ -3,6 +3,8 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const userRouter = require("./route/userRoutes.js");
+const bookRouter = require("./route/bookRoutes.js");
+const categoryRouter = require("./route/cartegoryRoutes.js");
 
 const app = express();
 
@@ -26,5 +28,7 @@ app.use("/api", limiter);
 app.use(express.json());
 
 app.use("/api/v1/users/", userRouter);
+app.use("/api/v1/books/", bookRouter);
+app.use("/api/v1/category/", categoryRouter);
 
 module.exports = app;
