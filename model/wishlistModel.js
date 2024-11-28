@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const cartSchema = new mongoose.Schema({
+const wishlistSchema = new mongoose.Schema({
   book: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Book",
@@ -16,4 +16,4 @@ const cartSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Cart", cartSchema);
+module.exports = mongoose.model("Wishlist", wishlistSchema);

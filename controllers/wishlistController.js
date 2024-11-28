@@ -1,4 +1,4 @@
-const Cart = require("../model/cartModel.js");
+const WishList = require("../model/wishlistModel.js");
 const User = require("../model/userModel.js");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
@@ -10,18 +10,17 @@ const findUserByToken = async (req) => {
   return await User.findById(decoded.id);
 };
 
-exports.getUserCart = async (req, res) => {
+exports.getUserWishList = async (req, res) => {
   try {
     var user = await findUserByToken(req);
-    var fetchedCart = await Cart.find({ created_by: user._id }).populate([
-      "book",
-      "category",
-    ]);
+    var fetchedWishList = await WishList.find({
+      created_by: user._id,
+    }).populate(["book", "category"]);
 
     res.status(200).json({
       response: true,
-      results: fetchedCart.length,
-      data: fetchedCart,
+      results: fetchedWishList.length,
+      data: fetchedWishList,
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
@@ -32,13 +31,13 @@ exports.getUserCart = async (req, res) => {
   }
 };
 
-exports.addToCart = async (req, res) => {
+exports.addToWishList = async (req, res) => {
   try {
     const { book, category } = req.body;
 
     // 1) Get user from collection
     const user = await findUserByToken(req);
-    const newCart = await Cart.create({
+    const newWishList = await WishList.create({
       book: book,
       category: category,
       created_by: user._id,
@@ -47,7 +46,7 @@ exports.addToCart = async (req, res) => {
     res.status(201).json({
       status: "success",
       data: {
-        cart: newCart,
+        wishlist: newWishList,
       },
     });
   } catch (error) {
@@ -59,11 +58,11 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-exports.removeFromCart = async (req, res) => {
+exports.removeFromWishList = async (req, res) => {
   try {
-    const cart = await Cart.findByIdAndDelete(req.params.id);
+    const wishlist = await WishList.findByIdAndDelete(req.params.id);
 
-    if (!cart) {
+    if (!wishlist) {
       res.status(404).json({
         response: false,
         error: "No Record found.",
