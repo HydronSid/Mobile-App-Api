@@ -1,5 +1,6 @@
 const express = require("express");
 const authController = require("../controllers/authController.js");
+const userController = require("../controllers/userController.js");
 
 const router = express.Router();
 
@@ -10,5 +11,7 @@ router.post(
   authController.protect,
   authController.changePassword
 );
+
+router.get("/", userController.getUsers);
 
 module.exports = router;

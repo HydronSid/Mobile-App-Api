@@ -6,7 +6,7 @@ const userRouter = require("./route/userRoutes.js");
 const bookRouter = require("./route/bookRoutes.js");
 const categoryRouter = require("./route/cartegoryRoutes.js");
 const cartRouter = require("./route/cartRoute.js");
-const wishlistRouter = require("./route/wiahlistRoute.js");
+const wishlistRouter = require("./route/wishlistRoute.js");
 
 const app = express();
 
@@ -34,5 +34,13 @@ app.use("/api/v1/books/", bookRouter);
 app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/cart/", cartRouter);
 app.use("/api/v1/wishlist/", wishlistRouter);
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    response: false,
+    error: err.message,
+  });
+});
 
 module.exports = app;

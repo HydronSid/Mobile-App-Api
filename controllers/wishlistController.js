@@ -2,6 +2,7 @@ const WishList = require("../model/wishlistModel.js");
 const User = require("../model/userModel.js");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const factoryHandler = require("./factoryHandler.js");
 
 const findUserByToken = async (req) => {
   token = req.headers.authorization.split(" ")[1];
@@ -58,25 +59,4 @@ exports.addToWishList = async (req, res) => {
   }
 };
 
-exports.removeFromWishList = async (req, res) => {
-  try {
-    const wishlist = await WishList.findByIdAndDelete(req.params.id);
-
-    if (!wishlist) {
-      res.status(404).json({
-        response: false,
-        error: "No Record found.",
-      });
-    }
-
-    res.status(204).json({
-      status: "Deleted Successfully",
-    });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
-  }
-};
+exports.removeFromWishList = factoryHandler.deleteOne(WishList);

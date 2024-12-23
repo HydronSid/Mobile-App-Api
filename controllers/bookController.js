@@ -1,5 +1,6 @@
 const Book = require("../model/bookModel.js");
 const Category = require("../model/categoryModel.js");
+const factoryHandler = require("./factoryHandler.js");
 
 //* get all category books.
 exports.getRandomBooks = async (req, res) => {
@@ -71,3 +72,5 @@ exports.createBook = async (req, res) => {
     });
   }
 };
+
+exports.deleteBook = factoryHandler.deleteOne(Book);

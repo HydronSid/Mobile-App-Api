@@ -2,6 +2,7 @@ const Cart = require("../model/cartModel.js");
 const User = require("../model/userModel.js");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const factoryHandler = require("./factoryHandler.js");
 
 const findUserByToken = async (req) => {
   token = req.headers.authorization.split(" ")[1];
@@ -59,25 +60,4 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-exports.removeFromCart = async (req, res) => {
-  try {
-    const cart = await Cart.findByIdAndDelete(req.params.id);
-
-    if (!cart) {
-      res.status(404).json({
-        response: false,
-        error: "No Record found.",
-      });
-    }
-
-    res.status(204).json({
-      status: "Deleted Successfully",
-    });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
-  }
-};
+exports.removeFromCart = factoryHandler.deleteOne(Cart);
