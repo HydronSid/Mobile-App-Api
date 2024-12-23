@@ -73,24 +73,4 @@ exports.createCategory = async (req, res) => {
 };
 
 //* delete category.
-exports.deleteCategory = async (req, res) => {
-  try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    if (!category) {
-      res.status(404).json({
-        response: false,
-        error: "No Catagory found.",
-      });
-    }
-
-    res.status(204).json({
-      status: "Deleted Successfully",
-    });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
-  }
-};
+exports.deleteCategory = factoryHandler.deleteOne(Category);
