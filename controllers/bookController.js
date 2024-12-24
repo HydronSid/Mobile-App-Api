@@ -59,18 +59,20 @@ exports.getBooksByCategory = async (req, res) => {
 };
 
 //* create book.
-exports.createBook = async (req, res) => {
-  try {
-    const book = new Book(req.body);
-    const newBook = await book.save();
-    res.status(201).json({ response: false, msg: "Book added succesfully." });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
-  }
-};
+// exports.createBook = async (req, res) => {
+//   try {
+//     const book = new Book(req.body);
+//     const newBook = await book.save();
+//     res.status(201).json({ response: false, msg: "Book added succesfully." });
+//   } catch (error) {
+//     const statusCode = error.statusCode || 500;
+//     res.status(statusCode).json({
+//       response: false,
+//       error: error.message,
+//     });
+//   }
+// };
 
+exports.createBook = factoryHandler.createOne(Book);
+exports.updateBook = factoryHandler.updateOne(Book);
 exports.deleteBook = factoryHandler.deleteOne(Book);

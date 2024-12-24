@@ -1,5 +1,6 @@
 const Category = require("../model/categoryModel.js");
 const { validateCreateCategory } = require("../utils/validators.js");
+const factoryHandler = require("../controllers/factoryHandler.js");
 
 //* get all categories.
 exports.getCategories = async (req, res) => {
@@ -71,6 +72,8 @@ exports.createCategory = async (req, res) => {
     });
   }
 };
+
+exports.updateCategory = factoryHandler.updateOne(Category);
 
 //* delete category.
 exports.deleteCategory = factoryHandler.deleteOne(Category);

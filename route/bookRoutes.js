@@ -12,6 +12,7 @@ router
 router
   .route("/:id")
   .get(bookController.getBooksByCategory)
+  .patch(bookController.updateBook)
   .delete(
     authController.protect,
     authController.restrictTo("author"),
