@@ -7,11 +7,13 @@ const bookRouter = require("./route/bookRoutes.js");
 const categoryRouter = require("./route/cartegoryRoutes.js");
 const cartRouter = require("./route/cartRoute.js");
 const wishlistRouter = require("./route/wishlistRoute.js");
+const cors = require("cors");
 
 const app = express();
 
 // ! Set Security HTTP Header
 app.use(helmet());
+app.use(cors());
 
 //! Development login
 if (process.env.NODE_ENV === "development") {
