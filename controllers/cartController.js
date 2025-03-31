@@ -1,19 +1,10 @@
 const Cart = require("../model/cartModel.js");
-const User = require("../model/userModel.js");
-const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
 const factoryHandler = require("./factoryHandler.js");
-
-const findUserByToken = async (req) => {
-  token = req.headers.authorization.split(" ")[1];
-  console.log(token);
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  return await User.findById(decoded.id);
-};
+const userController = require("./userController.js");
 
 exports.getUserCart = async (req, res) => {
   try {
-    var user = await findUserByToken(req);
+    var user = await userController.findUserByToken(req);
     var fetchedCart = await Cart.find({ created_by: user._id }).populate([
       "book",
       "category",
@@ -38,7 +29,7 @@ exports.addToCart = async (req, res) => {
     const { book, category } = req.body;
 
     // 1) Get user from collection
-    const user = await findUserByToken(req);
+    const user = await userController.findUserByToken(req);
     const newCart = await Cart.create({
       book: book,
       category: category,

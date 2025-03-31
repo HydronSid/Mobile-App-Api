@@ -16,14 +16,19 @@ const nameValidator = (name, errors) => {
   return errors;
 };
 
-const mobileValidator = (mobile, errors) => {
+const mobileValidator = async (mobile, errors, User = null) => {
   //* Validate mobile
   if (!mobile) {
     errors.mobile = ["The Mobile field is required."];
   } else if (mobile.length < 10) {
     errors.mobile = ["Mobile should be 10 digits long."];
+  } else if (User) {
+    // Only check for existing email if User is provided
+    const existingUser = await User.findOne({ mobile });
+    if (existingUser) {
+      errors.mobile = ["Mobile already exists."];
+    }
   }
-
   return errors;
 };
 
@@ -61,7 +66,7 @@ const validateSignUpData = async (data, User) => {
   const { email, password, name, mobile } = data;
   let errors = {};
   errors = nameValidator(name, errors);
-  errors = mobileValidator(mobile, errors);
+  errors = mobileValidator(mobile, errors, User);
   errors = passwordValidator(password, errors, "password");
   errors = emailValidator(email, errors, User);
 
