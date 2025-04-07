@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema({
   description: { type: String, trim: true },
   price: { type: String, trim: true },
   publishedDate: { type: Date },
-  coverImage: { type: String },
+  imageCover: { type: String },
   rating: { type: Number, min: 1, max: 5 },
   pages: { type: Number },
   category: {
@@ -15,6 +15,11 @@ const bookSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
+  // imageCover: {
+  //   type: String,
+  //   require: [true, "a book must have a image."],
+  // },
+  images: [String],
   language: { type: String, default: "English" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

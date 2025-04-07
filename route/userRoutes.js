@@ -21,5 +21,6 @@ router.patch(
 );
 
 router.get("/", userController.getUsers);
+router.get("/getProfileData", userController.getProfileData);
 
 module.exports = router;

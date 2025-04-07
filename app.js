@@ -7,6 +7,7 @@ const bookRouter = require("./route/bookRoutes.js");
 const categoryRouter = require("./route/cartegoryRoutes.js");
 const cartRouter = require("./route/cartRoute.js");
 const wishlistRouter = require("./route/wishlistRoute.js");
+const siteSettingsRouter = require("./route/siteSettingsRoutes.js");
 const cors = require("cors");
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/v1/books/", bookRouter);
 app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/cart/", cartRouter);
 app.use("/api/v1/wishlist/", wishlistRouter);
+app.use("/api/v1/siteSettings/", siteSettingsRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

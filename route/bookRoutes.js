@@ -12,7 +12,13 @@ router
 router
   .route("/:id")
   .get(bookController.getBooksByCategory)
-  .patch(bookController.updateBook)
+  .patch(
+    authController.protect,
+    authController.restrictTo("author"),
+    bookController.uploadBookImage,
+    bookController.resizeBookImages,
+    bookController.updateBook
+  )
   .delete(
     authController.protect,
     authController.restrictTo("author"),

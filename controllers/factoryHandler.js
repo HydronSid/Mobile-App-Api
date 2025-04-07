@@ -1,5 +1,16 @@
+const mongoose = require("mongoose");
+
 exports.deleteOne = (Model) => async (req, res) => {
   try {
+    const id = req.params.id;
+
+    // Validate ObjectId before query
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        response: false,
+        error: "Invalid ID format.",
+      });
+    }
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) {
@@ -23,7 +34,17 @@ exports.deleteOne = (Model) => async (req, res) => {
 
 exports.updateOne = (Model) => async (req, res) => {
   try {
-    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    const id = req.params.id;
+
+    // Validate ObjectId before query
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        response: false,
+        error: "Invalid ID format.",
+      });
+    }
+
+    const doc = await Model.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -37,7 +58,7 @@ exports.updateOne = (Model) => async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      data: { data: doc },
+      data: doc,
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
@@ -56,6 +77,40 @@ exports.createOne = (Model) => async (req, res) => {
       data: {
         data: doc,
       },
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      response: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.getOne = (Model, popOptions) => async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Validate ObjectId before query
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        response: false,
+        error: "Invalid ID format.",
+      });
+    }
+    let query = Model.findById(req.params.id);
+    if (popOptions) query.populate(popOptions);
+    const doc = await query;
+    if (!doc) {
+      res.status(404).json({
+        response: true,
+        message: "No document found with Id",
+      });
+    }
+
+    res.status(200).json({
+      response: true,
+      data: doc,
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;

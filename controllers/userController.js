@@ -50,18 +50,26 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 exports.uploadUserPhoto = upload.single("photo");
 
-exports.resizeUserPhoto = (req, res, next) => {
-  if (!req.file) return next();
+exports.resizeUserPhoto = async (req, res, next) => {
+  try {
+    if (!req.file) return next();
 
-  req.file.filename = `user-${user._id}-${Date.now()}.jpeg`;
+    req.file.filename = `user-${user._id}-${Date.now()}.jpeg`;
 
-  sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`public/images/users/${req.file.filename}`);
+    await sharp(req.file.buffer)
+      .resize(500, 500)
+      .toFormat("jpeg")
+      .jpeg({ quality: 90 })
+      .toFile(`public/images/users/${req.file.filename}`);
 
-  next();
+    next();
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      response: false,
+      error: error.message,
+    });
+  }
 };
 
 //* get all users.
@@ -74,6 +82,26 @@ exports.getUsers = async (req, res) => {
       response: true,
       results: fetchedUsers.length,
       data: fetchedUsers,
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      response: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.getProfileData = async (req, res) => {
+  try {
+    var tokenUser = await findUserByToken(req);
+
+    //* get all books with object of category.
+    const user = await User.findOne({ _id: tokenUser._id });
+
+    res.status(200).json({
+      response: true,
+      user,
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;

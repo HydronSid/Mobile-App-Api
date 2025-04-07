@@ -22,29 +22,29 @@ exports.getCategories = async (req, res) => {
 };
 
 //* get all category by id.
-exports.getCategoryById = async (req, res) => {
-  try {
-    var category = await Category.findById(req.params.id);
+// exports.getCategoryById = async (req, res) => {
+//   try {
+//     var category = await Category.findById(req.params.id);
 
-    if (!category) {
-      res.status(404).json({
-        response: false,
-        error: "No Catagory found.",
-      });
-    }
+//     if (!category) {
+//       res.status(404).json({
+//         response: false,
+//         error: "No Catagory found.",
+//       });
+//     }
 
-    res.status(200).json({
-      response: true,
-      category: category,
-    });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
-  }
-};
+//     res.status(200).json({
+//       response: true,
+//       category: category,
+//     });
+//   } catch (error) {
+//     const statusCode = error.statusCode || 500;
+//     res.status(statusCode).json({
+//       response: false,
+//       error: error.message,
+//     });
+//   }
+// };
 
 //* create category.
 exports.createCategory = async (req, res) => {
@@ -74,6 +74,7 @@ exports.createCategory = async (req, res) => {
 };
 
 exports.updateCategory = factoryHandler.updateOne(Category);
+exports.getCategoryById = factoryHandler.getOne(Category);
 
 //* delete category.
 exports.deleteCategory = factoryHandler.deleteOne(Category);
