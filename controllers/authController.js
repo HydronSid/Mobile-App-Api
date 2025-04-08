@@ -120,21 +120,20 @@ exports.sendMessage = async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    const browser = await puppeteer.launch({ headless: false });
 
     const page = await browser.newPage();
 
-    await page.goto("https://web.whatsapp.com");
+    await page.goto(
+      `https://web.whatsapp.com/send?phone=${phone}&text=${message}`
+    );
     await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
 
-    const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-      message
-    )}`;
-    await page.goto(url);
-    await page.waitForSelector("._3Uu1_");
+    // const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
+    //   message
+    // )}`;
+    // await page.goto(url);
+    // await page.waitForSelector("._3Uu1_");
     await page.keyboard.press("Enter");
 
     res.status(200).json({ success: true, message: "Message sent" });
