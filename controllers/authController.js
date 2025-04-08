@@ -118,28 +118,28 @@ exports.sendMessage = async (req, res) => {
   if (!phone || !message) {
     return res.status(400).json({ error: "Phone and message required" });
   }
-  try {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
 
+  try {
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
+    const page = await browser.newPage();
     await page.goto("https://web.whatsapp.com");
-    // console.log("Waiting for QR code scan...");
-    await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login
+    await page.waitForSelector("._3xTHG", { timeout: 0 });
 
     const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
       message
     )}`;
     await page.goto(url);
-    await page.waitForSelector("._3Uu1_"); // Wait for input box
+    await page.waitForSelector("._3Uu1_");
     await page.keyboard.press("Enter");
 
     res.status(200).json({ success: true, message: "Message sent" });
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      response: false,
-      error: error.message,
-    });
+    console.error("Error:", error);
+    res.status(500).json({ response: false, error: error.message });
   }
 };
 
