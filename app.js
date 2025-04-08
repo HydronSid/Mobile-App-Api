@@ -9,12 +9,14 @@ const cartRouter = require("./route/cartRoute.js");
 const wishlistRouter = require("./route/wishlistRoute.js");
 const siteSettingsRouter = require("./route/siteSettingsRoutes.js");
 const cors = require("cors");
+const compression = require("compression");
 
 const app = express();
 
 // ! Set Security HTTP Header
 app.use(helmet());
 app.use(cors());
+app.use(compression());
 
 //! Development login
 if (process.env.NODE_ENV === "development") {

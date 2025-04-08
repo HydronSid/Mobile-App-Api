@@ -7,6 +7,10 @@ const {
   validateChangePassword,
 } = require("../utils/validators.js");
 
+const express = require("express");
+const puppeteer = require("puppeteer");
+const cors = require("cors");
+
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -99,6 +103,37 @@ exports.signIn = async (req, res) => {
     }
 
     createSendToken(user, 200, res);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      response: false,
+      error: error.message,
+    });
+  }
+};
+
+exports.sendMessage = async (req, res) => {
+  const { phone, message } = req.body;
+
+  if (!phone || !message) {
+    return res.status(400).json({ error: "Phone and message required" });
+  }
+  try {
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+
+    await page.goto("https://web.whatsapp.com");
+    // console.log("Waiting for QR code scan...");
+    await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login
+
+    const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
+      message
+    )}`;
+    await page.goto(url);
+    await page.waitForSelector("._3Uu1_"); // Wait for input box
+    await page.keyboard.press("Enter");
+
+    res.status(200).json({ success: true, message: "Message sent" });
   } catch (error) {
     const statusCode = error.statusCode || 500;
     res.status(statusCode).json({

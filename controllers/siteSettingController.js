@@ -39,7 +39,7 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadSliderPhoto = upload.single("slider");
 
 exports.resizeSliderPhoto = async (req, res, next) => {
-  console.log("req.file", req.file);
+  // console.log("req.file", req.file);
 
   if (!req.file) return next();
 
