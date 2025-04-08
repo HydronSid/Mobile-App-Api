@@ -14,6 +14,7 @@ let server;
 process.on("uncaughtException", (err) => {
   console.error("UNCAUGHT EXCEPTION! 💥 Shutting down...");
   console.error(err.name, err.message);
+  replace;
 
   if (server) {
     server.close(() => {
@@ -25,29 +26,34 @@ process.on("uncaughtException", (err) => {
 });
 
 // Connect to MongoDB
-const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD
-);
+// const DB = process.env.DATABASE.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD
+// );
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("✅ Connected to MongoDB");
+// mongoose
+//   .connect(DB, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     console.log("✅ Connected to MongoDB");
 
-    // Start the server only after DB connection is successful
-    const port = process.env.PORT || 3000;
-    server = app.listen(port, () => {
-      console.log(`🚀 Server is running on port ${port}`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1);
-  });
+//     // Start the server only after DB connection is successful
+//     const port = process.env.PORT || 3000;
+//     server = app.listen(port, () => {
+//       console.log(`🚀 Server is running on port ${port}`);
+//     });
+//   })
+//   .catch((err) => {
+//     console.error("❌ MongoDB connection failed:", err.message);
+//     process.exit(1);
+//   });
+
+const port = process.env.PORT || 3000;
+server = app.listen(port, () => {
+  console.log(`🚀 Server is running on port ${port}`);
+});
 
 // Handle unhandled promise rejections (e.g. failed DB connection)
 process.on("unhandledRejection", (err) => {
