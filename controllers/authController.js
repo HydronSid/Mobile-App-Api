@@ -126,8 +126,9 @@ exports.sendMessage = async (req, res) => {
     });
 
     const page = await browser.newPage();
+
     await page.goto("https://web.whatsapp.com");
-    await page.waitForSelector("._3xTHG", { timeout: 0 });
+    await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
 
     const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
       message
@@ -138,7 +139,7 @@ exports.sendMessage = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Message sent" });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Puppeteer Error:", error);
     res.status(500).json({ response: false, error: error.message });
   }
 };
