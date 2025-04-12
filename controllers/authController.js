@@ -120,14 +120,19 @@ exports.sendMessage = async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      headless: false,
+    });
+    // const browser = await puppeteer.connect({
+    //   browserURL: "http://127.0.0.1:8000", // Chrome must be remote-debuggable
+    // });
 
     const page = await browser.newPage();
 
     await page.goto(
       `https://web.whatsapp.com/send?phone=${phone}&text=${message}`
     );
-    await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
+    // await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
 
     // const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
     //   message
