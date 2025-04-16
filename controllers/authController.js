@@ -126,75 +126,45 @@ exports.sendMessage = async (req, res) => {
     // const browser = await puppeteer.connect({
     //   browserURL: "http://127.0.0.1:8000", // Chrome must be remote-debuggable
     // });
+
     // const page = await browser.newPage();
+
     // await page.goto(
     //   `https://web.whatsapp.com/send?phone=${phone}&text=${message}`
     // );
     // await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
+
     // const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
     //   message
     // )}`;
     // await page.goto(url);
     // await page.waitForSelector("._3Uu1_");
     // await page.keyboard.press("Enter");
-    //! --------------------------------------------------------------------------------
-    // const browser = await puppeteer.launch({
-    //   headless: false, // keep false to see WhatsApp
-    //   args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    // });
-    // const page = await browser.newPage();
+
+    const browser = await puppeteer.launch({});
+    const page = await browser.newPage();
+    await page.goto("https://www.google.com");
+    // other actions...
+    await browser.close();
+
     // await page.goto(
     //   `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
     //     message
     //   )}`
     // );
     // console.log(`Navigating to WhatsApp chat with ${phone}`);
-    // // Wait for WhatsApp to load
-    // // await page.waitForSelector(
-    // //   'div[data-testid="conversation-compose-box-input"]',
-    // //   { timeout: 60000 }
-    // // );
-    // // Optional: Click Send (simulate Enter)
+
+    // Wait for WhatsApp to load
+    // await page.waitForSelector(
+    //   'div[data-testid="conversation-compose-box-input"]',
+    //   { timeout: 60000 }
+    // );
+
+    // Optional: Click Send (simulate Enter)
     // await page.keyboard.press("Enter");
-    // console.log("Message sent!");
-    // res.status(200).json({ success: true, message: "Message sent" });
-    // ! --------------------------------------------------------------------------------
 
-    console.log("Launching browser...");
-
-    const browser = await puppeteer.launch({
-      headless: true, // for debugging, set true if running in server mode
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-extensions",
-      ],
-      defaultViewport: null,
-    });
-
-    const page = await browser.newPage();
-
-    const whatsappUrl = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-      message
-    )}`;
-
-    console.log(`Navigating to ${whatsappUrl}`);
-    await page.goto(whatsappUrl, { waitUntil: "domcontentloaded" });
-
-    // Wait for WhatsApp's message box to be ready
-    await page.waitForSelector(
-      'div[data-testid="conversation-compose-box-input"]',
-      {
-        timeout: 60000,
-      }
-    );
-
-    // Press "Enter" to send the message
-    await page.keyboard.press("Enter");
-    console.log("✅ Message sent!");
-
-    res.status(200).json({ success: true, message: "Message sent!" });
+    console.log("Message sent!");
+    res.status(200).json({ success: true, message: "Message sent" });
   } catch (error) {
     console.error("Puppeteer Error:", error);
     res.status(500).json({ response: false, error: error.message });
