@@ -122,6 +122,7 @@ exports.sendMessage = async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: false,
+      executablePath: puppeteer.executablePath(),
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     // const browser = await puppeteer.connect({
