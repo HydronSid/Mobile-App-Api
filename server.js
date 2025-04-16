@@ -1,5 +1,9 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+console.log(
+  "🧪 Chrome Executable Path:",
+  require("puppeteer").executablePath()
+);
 
 // Load env variables from config.env
 dotenv.config({ path: "./config.env" });
