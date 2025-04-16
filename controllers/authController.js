@@ -120,32 +120,27 @@ exports.sendMessage = async (req, res) => {
   }
 
   try {
-    // const browser = await puppeteer.launch({
-    //   headless: false,
-    // });
+    const browser = await puppeteer.launch({
+      headless: false,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     // const browser = await puppeteer.connect({
     //   browserURL: "http://127.0.0.1:8000", // Chrome must be remote-debuggable
     // });
 
-    // const page = await browser.newPage();
+    const page = await browser.newPage();
 
     // await page.goto(
     //   `https://web.whatsapp.com/send?phone=${phone}&text=${message}`
     // );
     // await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
 
-    // const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-    //   message
-    // )}`;
+    const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
+      message
+    )}`;
     // await page.goto(url);
     // await page.waitForSelector("._3Uu1_");
     // await page.keyboard.press("Enter");
-
-    const browser = await puppeteer.launch({});
-    const page = await browser.newPage();
-    await page.goto("https://www.google.com");
-    // other actions...
-    await browser.close();
 
     // await page.goto(
     //   `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
