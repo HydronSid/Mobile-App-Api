@@ -18,7 +18,7 @@ let server;
 process.on("uncaughtException", (err) => {
   console.error("UNCAUGHT EXCEPTION! 💥 Shutting down...");
   console.error(err.name, err.message);
-  replace;
+  // replace;
 
   if (server) {
     server.close(() => {
