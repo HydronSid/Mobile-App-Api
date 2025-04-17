@@ -61,5 +61,5 @@ COPY . .
 # ✅ Expose the app's port
 EXPOSE 3000
 
-# # ✅ Start the app
-# CMD ["node", "server.js"]
+# ✅ Start the app
+CMD ["node", "server.js"]
