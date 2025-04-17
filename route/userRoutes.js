@@ -23,6 +23,4 @@ router.patch(
 router.get("/", userController.getUsers);
 router.get("/getProfileData", userController.getProfileData);
 
-router.post("/send-message", authController.sendMessage);
-
 module.exports = router;

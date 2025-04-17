@@ -6,3 +6,5 @@ config.env
 
 # Lock files (optional, but recommended to keep only one package manager lock file)
 package-lock.json
+/.wwebjs_auth
+/.wwebjs_cache

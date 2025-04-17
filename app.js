@@ -8,6 +8,7 @@ const categoryRouter = require("./route/cartegoryRoutes.js");
 const cartRouter = require("./route/cartRoute.js");
 const wishlistRouter = require("./route/wishlistRoute.js");
 const siteSettingsRouter = require("./route/siteSettingsRoutes.js");
+const wpRouter = require("./route/wpRoutes.js");
 const cors = require("cors");
 const compression = require("compression");
 
@@ -40,6 +41,7 @@ app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/cart/", cartRouter);
 app.use("/api/v1/wishlist/", wishlistRouter);
 app.use("/api/v1/siteSettings/", siteSettingsRouter);
+app.use("/api/v1/whatsapp/", wpRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -7,10 +7,6 @@ const {
   validateChangePassword,
 } = require("../utils/validators.js");
 
-const express = require("express");
-const puppeteer = require("puppeteer");
-const cors = require("cors");
-
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -109,61 +105,6 @@ exports.signIn = async (req, res) => {
       response: false,
       error: error.message,
     });
-  }
-};
-
-exports.sendMessage = async (req, res) => {
-  const { phone, message } = req.body;
-
-  if (!phone || !message) {
-    return res.status(400).json({ error: "Phone and message required" });
-  }
-
-  try {
-    const browser = await puppeteer.launch({
-      headless: false,
-      executablePath: puppeteer.executablePath(),
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-    // const browser = await puppeteer.connect({
-    //   browserURL: "http://127.0.0.1:8000", // Chrome must be remote-debuggable
-    // });
-
-    const page = await browser.newPage();
-
-    // await page.goto(
-    //   `https://web.whatsapp.com/send?phone=${phone}&text=${message}`
-    // );
-    // await page.waitForSelector("._3xTHG", { timeout: 0 }); // Wait for login (QR scan)
-
-    const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-      message
-    )}`;
-    // await page.goto(url);
-    // await page.waitForSelector("._3Uu1_");
-    // await page.keyboard.press("Enter");
-
-    // await page.goto(
-    //   `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(
-    //     message
-    //   )}`
-    // );
-    // console.log(`Navigating to WhatsApp chat with ${phone}`);
-
-    // Wait for WhatsApp to load
-    // await page.waitForSelector(
-    //   'div[data-testid="conversation-compose-box-input"]',
-    //   { timeout: 60000 }
-    // );
-
-    // Optional: Click Send (simulate Enter)
-    // await page.keyboard.press("Enter");
-
-    console.log("Message sent!");
-    res.status(200).json({ success: true, message: "Message sent" });
-  } catch (error) {
-    console.error("Puppeteer Error:", error);
-    res.status(500).json({ response: false, error: error.message });
   }
 };
 

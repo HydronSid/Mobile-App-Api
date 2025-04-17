@@ -12,7 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-const findUserByToken = async (req) => {
+exports.findUserByToken = async (req) => {
   token = req.headers.authorization.split(" ")[1];
   // console.log(token);
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
