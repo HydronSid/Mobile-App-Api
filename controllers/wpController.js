@@ -106,7 +106,7 @@ function initWhatsapp(userId) {
 exports.getQrAsImage = async (req, res) => {
   console.log("📲 Generating QR code image...");
 
-  var user = await userController.findUserByToken(req);
+  // var user = await userController.findUserByToken(req);
   try {
     const qrCodeString = await initWhatsapp();
 
@@ -120,7 +120,7 @@ exports.getQrAsImage = async (req, res) => {
 
 // 🟢 API Controller: QR as JSON (base64 & raw)
 exports.getQrAsJson = async (req, res) => {
-  var user = await userController.findUserByToken(req);
+  // var user = await userController.findUserByToken(req);
   try {
     const qrCodeString = await initWhatsapp();
 
