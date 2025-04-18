@@ -120,8 +120,10 @@ exports.getQrAsImage = async (req, res) => {
 
 // 🟢 API Controller: QR as JSON (base64 & raw)
 exports.getQrAsJson = async (req, res) => {
+  var user = await userController.findUserByToken(req);
   try {
-    const qrCodeString = await initWhatsapp();
+    const qrCodeString = await initWhatsapp(user._id);
+
     const qrImage = await qrcode.toDataURL(qrCodeString);
 
     return res.json({ base64: qrImage, raw: qrCodeString });
