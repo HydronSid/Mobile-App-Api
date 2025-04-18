@@ -108,7 +108,8 @@ exports.getQrAsImage = async (req, res) => {
 
   var user = await userController.findUserByToken(req);
   try {
-    const qrCodeString = await initWhatsapp(user._id);
+    // const qrCodeString = await initWhatsapp(user._id);
+    const qrCodeString = await initWhatsapp();
 
     res.setHeader("Content-Type", "image/png");
     await qrcode.toFileStream(res, qrCodeString); // PNG stream to response
@@ -122,7 +123,8 @@ exports.getQrAsImage = async (req, res) => {
 exports.getQrAsJson = async (req, res) => {
   var user = await userController.findUserByToken(req);
   try {
-    const qrCodeString = await initWhatsapp(user._id);
+    // const qrCodeString = await initWhatsapp(user._id);
+    const qrCodeString = await initWhatsapp();
 
     const qrImage = await qrcode.toDataURL(qrCodeString);
 
