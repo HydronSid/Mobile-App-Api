@@ -166,7 +166,7 @@ exports.sendWpMessage = async (req, res) => {
 
     await client.sendMessage(chatId, message);
 
-    res.json({ success: true, sentTo: number, message });
+    res.status(200).json({ success: true, sentTo: number, message });
   } catch (err) {
     console.error("❌ Failed to send message:", err);
     res.status(500).json({ error: "Failed to send message" });
