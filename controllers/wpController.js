@@ -169,7 +169,7 @@ exports.sendWpMessage = async (req, res) => {
     res.status(200).json({ success: true, sentTo: number, message });
   } catch (err) {
     console.error("❌ Failed to send message:", err);
-    res.status(500).json({ error: "Failed to send message" });
+    res.status(400).json({ error: "Failed to send message" });
   }
 };
 
